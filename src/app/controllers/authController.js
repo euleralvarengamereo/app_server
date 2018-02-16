@@ -37,9 +37,13 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/authenticate', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, domain } = req.body;
 
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email, domain }).select('+password');
+
+
+  if (!user)
+    return res.status(400).send({ error: 'Domain not found' });
 
   if (!user)
     return res.status(400).send({ error: 'User not found' });
@@ -78,7 +82,7 @@ router.post('/forgot_password', async (req, res) => {
 
     mailer.sendMail({
       to: email,
-      from: 'diego@rocketseat.com.br',
+      from: 'euler.alvarenga@mereo.com',
       template: 'auth/forgot_password',
       context: { token },
     }, (err) => {

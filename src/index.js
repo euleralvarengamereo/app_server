@@ -8,4 +8,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 require('./app/controllers/index')(app);
 
-app.listen(3000);
+// set the port of our application
+// process.env.PORT lets the port be set by Heroku
+const port = process.env.PORT || 3000;
+
+app.listen(port);
